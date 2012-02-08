@@ -1,5 +1,7 @@
 <?php
-class ActivitiesController extends AppController {
+App::uses('ActivitiesAppController', 'Activities.Controller');
+
+class ActivitiesController extends ActivitiesAppController {
 
 	public $name = 'Activities';
 	public $uses = 'Activities.Activity';
@@ -12,8 +14,9 @@ class ActivitiesController extends AppController {
 				'Activity.parent_foreign_key' => $parentForeignKey,
 				),
 			);
-		return $this->paginate();
+		$activities = $this->paginate();
+		$this->set(compact('activities'));
+		return $activities;
 	}
 
 }
-?>

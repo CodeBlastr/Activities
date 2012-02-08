@@ -1,5 +1,7 @@
 <?php
-class Activity extends AppModel {
+App::uses('ActivitiesAppModel', 'Activities.Model'); 
+
+class Activity extends ActivitiesAppModel {
 
 	var $name = 'Activity';
 	var $displayField = 'name';
