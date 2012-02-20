@@ -1,11 +1,11 @@
 <?php
 /* Activities Test cases generated on: 2012-01-13 13:31:26 : 1326461486*/
-App::uses('Activities', 'Activities.Controller');
+App::uses('ActivitiesController', 'Activities.Controller');
 
 /**
  * TestActivities *
  */
-class TestActivities extends Activities {
+class TestActivities extends ActivitiesController {
 /**
  * Auto render
  *
@@ -46,9 +46,14 @@ class ActivitiesTestCase extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->Activities = new TestActivities();
-		$this->Activity->constructClasses();
+		#$this->Activities = new TestActivities();
+		$this->Activities = new ActivitiesController;
 	}
+
+    public function testIndex() {
+    	$result = $this->Activities->index(90);
+	    $this->assertContains('Activities', $result);
+    }
 
 /**
  * tearDown method
