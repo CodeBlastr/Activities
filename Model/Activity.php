@@ -18,5 +18,13 @@ class Activity extends ActivitiesAppModel {
 		)
 	);
 	
+	function add($data) {
+	    if (!empty($data)) {
+	        if ($this->save($data)) {
+	            return true;
+	        }
+        }
+	}
+	
 }
 ?>

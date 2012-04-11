@@ -18,5 +18,21 @@ class ActivitiesController extends ActivitiesAppController {
 		$this->set(compact('activities'));
 		return $activities;
 	}
+	
+	/**
+	 * Method to add activities from other plugins
+	 */
+	public function record() {
+    	if (!empty($this->request->data)) {
+    	    $this->request->data['Activity']['user_id'] = $this->Auth->user('id');
+    	    $this->request->data['Activity']['foreign_key'] = 0;
+    	    if ($this->Activity->add($this->request->data)) {
+    	        $this->Session->setFlash(__('The activity has been saved', true));
+    	    } else {
+    	        $this->Session->setFlash(__('The activity could not be saved. Please, try again.', true));
+    	    }
+    	    $this->redirect($this->referer());
+    	}
+	}
 
 }
