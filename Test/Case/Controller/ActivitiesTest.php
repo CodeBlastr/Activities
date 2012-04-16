@@ -2,27 +2,24 @@
 /* Activities Test cases generated on: 2012-01-13 13:31:26 : 1326461486*/
 App::uses('ActivitiesController', 'Activities.Controller');
 
-/**
- * TestActivities *
- */
-class TestActivities extends ActivitiesController {
-/**
- * Auto render
- *
- * @var boolean
- */
-	public $autoRender = false;
 
-/**
- * Redirect action
- *
- * @param mixed $url
- * @param mixed $status
- * @param boolean $exit
- * @return void
- */
-	public function redirect($url, $status = null, $exit = true) {
-		$this->redirectUrl = $url;
+
+if (!class_exists('Activity')) {
+	class Activity extends CakeTestModel {
+	/**
+	 *
+	 */
+		public $callbackData = array();
+		
+	/**
+	 *
+	 */
+		public $useTable = 'activities';
+
+	/**
+	 *
+	 */
+		public $name = 'Activity';
 	}
 }
 
@@ -30,13 +27,16 @@ class TestActivities extends ActivitiesController {
  * Activities Test Case
  *
  */
-class ActivitiesTestCase extends CakeTestCase {
+class InstallTestCase extends ControllerTestCase {
+	
 /**
  * Fixtures
  *
  * @var array
  */
-	public $fixtures = array('');
+	public $fixtures = array(
+		'plugin.Activities.activity',
+		);
 
 /**
  * setUp method
@@ -50,9 +50,13 @@ class ActivitiesTestCase extends CakeTestCase {
 		$this->Activities = new ActivitiesController;
 	}
 
+/**
+ * test index
+ *
+ */
     public function testIndex() {
-    	$result = $this->Activities->index(90);
-	    $this->assertContains('Activities', $result);
+   		$result = $this->testAction('/activities/activities/index/4e493854-21c0-43bc-9c6d-7dcd45a3a949', array('return' => 'vars'));
+		$this->assertEqual(2, count($result['activities'])); // test that there are two records returned from the fixture under the activities variable name
     }
 
 /**
