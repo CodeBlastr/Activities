@@ -2,10 +2,14 @@
 class ActivitiesSchema extends CakeSchema {
 
 	public function before($event = array()) {
-		return true;
+		App::uses('ZuhaSchema', 'Model');
+		$this->ZuhaSchema = new ZuhaSchema;
+		$before = $this->ZuhaSchema->before($event);
+		return $before;
 	}
 
 	public function after($event = array()) {
+		$this->ZuhaSchema->after($event);
 	}
 	
 	public $activities = array(
