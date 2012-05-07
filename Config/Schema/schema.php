@@ -1,17 +1,24 @@
 <?php 
 class ActivitiesSchema extends CakeSchema {
 
+	public $renames = array();
+
+	public function __construct($options = array()) {
+		parent::__construct();
+	}
+
 	public function before($event = array()) {
-		App::uses('ZuhaSchema', 'Model');
-		$this->ZuhaSchema = new ZuhaSchema;
-		$before = $this->ZuhaSchema->before($event);
+		App::uses('UpdateSchema', 'Model'); 
+		$this->UpdateSchema = new UpdateSchema;
+		$before = $this->UpdateSchema->before($event);
 		return $before;
 	}
 
 	public function after($event = array()) {
-		$this->ZuhaSchema->after($event);
+		$this->UpdateSchema->rename($event, $this->renames);
+		$this->UpdateSchema->after($event);
 	}
-	
+
 	public $activities = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'activity_type' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 100, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
