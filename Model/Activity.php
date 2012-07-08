@@ -17,13 +17,6 @@ class Activity extends ActivitiesAppModel {
 		)
 	);
 	
-	public function __construct($id = false, $table = null, $ds = null) {
-		if (in_array('Affiliates', CakePlugin::loaded())) {
-			$this->actsAs[] = 'Affiliates.Referrable';
-		}		
-    	parent::__construct($id, $table, $ds);		
-    }
-	
 	public function add($data) {
 	    if (!empty($data)) {
 	        if ($this->save($data)) {
