@@ -16,13 +16,13 @@ class LoggableBehavior extends ModelBehavior {
  */
 	public function afterSave(&$model, $created) {
 		if ($created) {
-			$data['Activity']['name'] = $model->data[$model->alias][$this->settings['nameField']];
-			$data['Activity']['description'] = $model->data[$model->alias][$this->settings['descriptionField']];
+			$data['Activity']['name'] = !empty($model->data[$model->alias][$this->settings['nameField']]) ? $model->data[$model->alias][$this->settings['nameField']] : null;
+			$data['Activity']['description'] = !empty($model->data[$model->alias][$this->settings['descriptionField']]) ? $model->data[$model->alias][$this->settings['descriptionField']] : null;
 			$data['Activity']['model'] = $model->alias;
 			$data['Activity']['foreign_key'] = $model->id;
-			$data['Activity']['parent_foreign_key'] = $model->data[$model->alias][$this->settings['parentForeignKey']];
-			$data['Activity']['action_description'] = $this->settings['actionDescription'];
-			$data['Activity']['user_id'] = $model->data[$model->alias][$this->settings['userField']];
+			$data['Activity']['parent_foreign_key'] = !empty($model->data[$model->alias][$this->settings['parentForeignKey']]) ? $model->data[$model->alias][$this->settings['parentForeignKey']] : null;
+			$data['Activity']['action_description'] = !empty($this->settings['actionDescription']) ? $this->settings['actionDescription'] : null;
+			$data['Activity']['user_id'] = !empty($model->data[$model->alias][$this->settings['userField']]) ? $model->data[$model->alias][$this->settings['userField']] : null;
 			$Activity = ClassRegistry::init('Activity');
 			$Activity->save($data);
 		}
