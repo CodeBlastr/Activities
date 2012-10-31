@@ -24,6 +24,7 @@ class LoggableBehavior extends ModelBehavior {
 			$data['Activity']['action_description'] = !empty($this->settings['actionDescription']) ? $this->settings['actionDescription'] : null;
 			$data['Activity']['user_id'] = !empty($model->data[$model->alias][$this->settings['userField']]) ? $model->data[$model->alias][$this->settings['userField']] : null;
 			$Activity = ClassRegistry::init('Activity');
+			$Activity->create();
 			$Activity->save($data);
 		}
 	}
