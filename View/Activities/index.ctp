@@ -1,2 +1,2 @@
 <?php 
-debug($activities);
+echo $this->Element('scaffolds/index', array('data' => $activities));
