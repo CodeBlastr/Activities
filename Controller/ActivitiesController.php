@@ -20,18 +20,15 @@ class ActivitiesController extends ActivitiesAppController {
 /**
  * Index method
  * 
- * @param type $parentForeignKey
- * @return type
+ * @return array
  */
-	public function index($parentForeignKey = null) {
-		$this->Activity->recursive = 0;
-		$this->paginate = array(
-			'conditions' => array(
-				'Activity.parent_foreign_key' => $parentForeignKey,
-				),
-			);
+	public function index() {
+		$this->paginate['fields'] = array('id', 'name', 'creator_id', 'created');
+		$this->paginate['contain'] = array('Creator' => array('fields' => array('id', 'full_name')));
+		$associations =  array('Creator' => array('displayField' => 'full_name'));
+		
 		$activities = $this->paginate();
-		$this->set(compact('activities'));
+		$this->set(compact('activities', 'associations'));
 		return $activities;
 	}
 	
@@ -93,8 +90,8 @@ class ActivitiesController extends ActivitiesAppController {
 				'Activity.id' => $id,
 				),
 			));
-        
-		$this->set(compact('activity', 'contactDetailTypes'));
+		
+		$this->set(compact('activity'));
 		
 		$this->set('page_title_for_layout', $activity['Activity']['name']);
 		$this->set('title_for_layout',  $activity['Activity']['name']);

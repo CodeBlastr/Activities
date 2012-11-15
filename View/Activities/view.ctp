@@ -16,6 +16,7 @@ $this->set('context_menu', array('menus' => array(
 	array(
 		'heading' => 'Activities',
 		'items' => array(
+			$this->Html->link(__('Related %s', $activity['Activity']['model']), array('plugin' => Inflector::tableize(ZuhaInflector::pluginize($activity['Activity']['model'])), 'controller' => Inflector::tableize($activity['Activity']['model']), 'action' => 'view', $activity['Activity']['foreign_key'])),
 			$this->Html->link(__('Edit'), array('plugin' => 'activities', 'controller' => 'activities', 'action' => 'edit', $activity['Activity']['id'])),
 			),
 		),

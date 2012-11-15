@@ -14,6 +14,13 @@ class Activity extends ActivitiesAppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'Creator' => array(
+			'className' => 'Users.User',
+			'foreignKey' => 'creator_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 	
