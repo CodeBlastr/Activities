@@ -16,6 +16,7 @@ $this->set('context_menu', array('menus' => array(
 		'heading' => 'Activities',
 		'items' => array(
 			$this->Html->link(__('List'), array('plugin' => 'activities', 'controller'=> 'activities', 'action' => 'index')),
+    		$this->Html->link(__('Delete'), array('controller' => 'activities', 'action' => 'delete', $this->request->data['Activity']['id']), null, __('Are you sure you want to delete %s', $this->request->data['Activity']['id'])),
 			),
 		),
 	)));  ?>

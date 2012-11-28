@@ -97,4 +97,18 @@ class ActivitiesController extends ActivitiesAppController {
 		$this->set('title_for_layout',  $activity['Activity']['name']);
 	}
 
+    public function delete($id = null) {
+		$this->Activity->id = $id;
+		if (!$this->Activity->exists()) {
+			throw new NotFoundException(__('Invalid activity'));
+		}
+		
+		if ($this->Activity->delete($id)) {
+			$this->Session->setFlash(__('Activity deleted'));
+			$this->redirect(array('action'=>'index'));
+		}
+		$this->Session->setFlash(__('Activity was not deleted'));
+		$this->redirect(array('action' => 'index'));
+	}
+
 }
