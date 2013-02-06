@@ -22,10 +22,14 @@ class ActivitiesController extends ActivitiesAppController {
  * 
  * @return array
  */
-	public function index() {
-		$this->paginate['fields'] = array('id', 'name', 'creator_id', 'created');
+	public function index($parentForeignKey = null) {
+		$this->paginate['fields'] = array('id', 'name', 'creator_id', 'created', 'description');
 		$this->paginate['contain'] = array('Creator' => array('fields' => array('id', 'full_name')));
 		$associations =  array('Creator' => array('displayField' => 'full_name'));
+
+		if ( $parentForeignKey ) {
+			$this->paginate['conditions'] = array('parent_foreign_key' => $parentForeignKey);
+		}
 		
 		$activities = $this->paginate();
 		$this->set(compact('activities', 'associations'));
