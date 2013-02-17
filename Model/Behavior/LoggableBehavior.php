@@ -47,7 +47,9 @@ class LoggableBehavior extends ModelBehavior {
         $data['Activity']['user_id'] = !empty($Model->data[$Model->alias][$settings['userField']]) ? $Model->data[$Model->alias][$settings['userField']] : null;
         $Activity = ClassRegistry::init('Activity');
         $Activity->create();
-        $Activity->save($data);		
+		if ($Activity->save($data)) {
+			return true;
+		}
 	}
 
 }
