@@ -1,7 +1,12 @@
 <?php
 class LoggableBehavior extends ModelBehavior {
 
-	public $settings = array('nameField' => 'name', 'descriptionField' => 'description', 'actionDescription' => 'Activity by', 'userField' => 'user_id', 'parentForeignKey' => 'foreign_key');
+	public $settings = array(
+		'nameField' => 'name', 
+		'descriptionField' => 'description', 
+		'actionDescription' => 'Activity by', 
+		'userField' => 'user_id', 
+		'parentForeignKey' => 'foreign_key');
 	
 /**
  * Setup 
