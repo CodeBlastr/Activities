@@ -34,10 +34,10 @@ class ActivitiesControllerTestCase extends ControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'plugin.Activities.activity',
-		'core.aco',
-		'core.aro',
-		'core.aros_aco',
+		'plugin.Activities.Activity',
+		'core.Aco',
+		'core.Aro',
+		'core.ArosAco',
 		);
 
 /**
@@ -48,7 +48,7 @@ class ActivitiesControllerTestCase extends ControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		#$this->Activities = new TestActivities();
+		//$this->Activities = new TestActivities();
 		$this->Activities = new ActivitiesController;
 	}
 
@@ -57,6 +57,8 @@ class ActivitiesControllerTestCase extends ControllerTestCase {
  *
  */
     public function testIndex() {
+		debug($this->Activities->Activity->find('all'));
+		break;
    		//$result = $this->testAction('/activities/activities/index/4e493854-21c0-43bc-9c6d-7dcd45a3a949', array('return' => 'vars'));
 		//$this->assertEqual(2, count($result['activities'])); // test that there are two records returned from the fixture under the activities variable name
     }
