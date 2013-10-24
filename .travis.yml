@@ -13,9 +13,11 @@ matrix:
         - PHPCS=1
 
 before_script:
-  - git clone git://github.com/cakephp/cakephp ../cakephp && cd ../cakephp
-  - mv ../Activities-Zuha-Cakephp-Plugin plugins/Activities
-  - chmod -R 777 ../cakephp/app/tmp
+  - git clone https://github.com/zuha/Zuha.git ../zuha && cd ../zuha
+  - rm -rf app/Plugin/Activities
+  - mv ../Activities-Zuha-Cakephp-Plugin app/Plugin/Activities
+  - chmod -R 777 ../zuha/app/tmp
+  - chmod -R 777 ../zuha/lib/Cake/Console/Templates/skel/tmp/cache
   - sh -c "mysql -e 'CREATE DATABASE cakephp_test;'"
   - echo "<?php
     class DATABASE_CONFIG {
@@ -26,9 +28,9 @@ before_script:
       'login' => 'travis',
       'persistent' => false,
     );
-    }" > ../cakephp/app/Config/database.php
+    }" > ../zuha/app/Config/database.php
   - sh -c "if [ '$PHPCS' = '1' ]; then pear channel-discover pear.cakephp.org; fi"
   - sh -c "if [ '$PHPCS' = '1' ]; then pear install --alldeps cakephp/CakePHP_CodeSniffer; fi"
 
 script:
-  - sh phpcs --standard=CakePHP plugins/Activities; ./lib/Cake/Console/cake test Activities Controller/Activities --stderr;
+  - sh phpcs --standard=CakePHP app/Plugin/Activities; cd app; ../lib/Cake/Console/cake test Activities Controller/Activities --stderr;
