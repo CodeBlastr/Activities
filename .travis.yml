@@ -1,4 +1,29 @@
 language: php
+
 php:
   - 5.5
   - 5.4
+
+before_script:
+  - git clone git://github.com/cakephp/cakephp ../cakephp && cd ../cakephp
+  - mv ../Activities-Zuha-Cakephp-Plugin plugins/Activities
+  - chmod -R 777 ../cakephp/app/tmp
+  - sh -c "mysql -e 'CREATE DATABASE cakephp_test;'"
+  - echo "<?php
+    class DATABASE_CONFIG {
+    public \$test = array(
+      'datasource' => 'Database/Mysql',
+      'database' => 'cakephp_test',
+      'host' => '0.0.0.0',
+      'login' => 'travis'
+      'host' => '',
+      'persistent' => false,
+    );
+    }" > ../cakephp/app/Config/database.php
+  - sh pear install pear/PHP_CodeSniffer
+  - sh pear channel-discover pear.cakephp.org
+  - sh pear install cakephp/CakePHP_CodeSniffer
+  - sh phpcs --standard=CakePHP plugins/Activities
+
+script:
+  - ./lib/Cake/Console/cake test Activities Controller/Activities --stderr
