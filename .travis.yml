@@ -1,10 +1,11 @@
 language: php
 
 php:
-  - 5.5
   - 5.4
 
 before_script:
+  - composer selfupdate
+  - composer install
   - git clone git://github.com/cakephp/cakephp ../cakephp && cd ../cakephp
   - mv ../Activities-Zuha-Cakephp-Plugin plugins/Activities
   - chmod -R 777 ../cakephp/app/tmp
@@ -21,9 +22,8 @@ before_script:
     );
     }" > ../cakephp/app/Config/database.php
   - sh pear install pear/PHP_CodeSniffer
-  - sh pear channel-discover pear.cakephp.org
-  - sh pear install cakephp/CakePHP_CodeSniffer
-  - sh phpcs --standard=CakePHP plugins/Activities
+  - sh -c "if [ '$PHPCS' = '1' ]; then pear channel-discover pear.cakephp.org; fi"
+  - sh -c "if [ '$PHPCS' = '1' ]; then pear install --alldeps cakephp/CakePHP_CodeSniffer; fi"
 
 script:
-  - ./lib/Cake/Console/cake test Activities Controller/Activities --stderr
+  - sh phpcs --standard=CakePHP plugins/Activities; ./lib/Cake/Console/cake test Activities Controller/Activities --stderr;
