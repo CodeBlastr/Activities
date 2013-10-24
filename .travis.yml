@@ -19,7 +19,6 @@ before_script:
       'persistent' => false,
     );
     }" > ../cakephp/app/Config/database.php
-  - sh pear install pear/PHP_CodeSniffer
   - sh -c "if [ '$PHPCS' = '1' ]; then pear channel-discover pear.cakephp.org; fi"
   - sh -c "if [ '$PHPCS' = '1' ]; then pear install --alldeps cakephp/CakePHP_CodeSniffer; fi"
 
