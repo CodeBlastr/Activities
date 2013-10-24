@@ -18,6 +18,8 @@ before_script:
   - mv ../Activities-Zuha-Cakephp-Plugin app/Plugin/Activities
   - chmod -R 777 ../zuha/app/tmp
   - chmod -R 777 ../zuha/lib/Cake/Console/Templates/skel/tmp/cache
+  - sh -c "if [ '$PHPCS' = '1' ]; then pear channel-discover pear.cakephp.org; fi"
+  - sh -c "if [ '$PHPCS' = '1' ]; then pear install --alldeps cakephp/CakePHP_CodeSniffer; fi"
   - sh -c "mysql -e 'CREATE DATABASE cakephp_test;'"
   - echo "<?php
     class DATABASE_CONFIG {
@@ -29,8 +31,9 @@ before_script:
       'persistent' => false,
     );
     }" > ../zuha/app/Config/database.php
-  - sh -c "if [ '$PHPCS' = '1' ]; then pear channel-discover pear.cakephp.org; fi"
-  - sh -c "if [ '$PHPCS' = '1' ]; then pear install --alldeps cakephp/CakePHP_CodeSniffer; fi"
 
 script:
-  - sh phpcs --standard=CakePHP app/Plugin/Activities; cd app; ../lib/Cake/Console/cake test Activities Controller/Activities --stderr;
+  - sh -c "if [ '$PHPCS' = '1' ]; then phpcs -p --extensions=php --standard=CakePHP app/Plugin/Activities; else cd app; ../lib/Cake/Console/cake test Activities Controller/Activities --stderr; fi"
+
+notifications:
+  email: false
