@@ -37,7 +37,7 @@ class ActivitiesControllerTestCase extends ControllerTestCase {
 	public $fixtures = array(
 		'plugin.Activities.Activity',
 		// 'app.Aco',
-		// 'app.Aro',
+		// 'app.Aro', 
 		// 'app.ArosAco'
 		);
 

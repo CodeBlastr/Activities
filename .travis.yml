@@ -37,4 +37,8 @@ script:
   - sh -c "if [ '$PHPCS' = '1' ]; then phpcs -p --extensions=php --standard=CakePHP app/Plugin/Activities; else cd app; ../lib/Cake/Console/cake test Activities Controller/Activities --stderr; fi"
 
 notifications:
-  email: false
+  email:
+    recipients:
+      - support@buildrr.com
+    on_success: never
+    on_failure: always 
