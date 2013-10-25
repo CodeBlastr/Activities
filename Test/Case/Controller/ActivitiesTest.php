@@ -29,13 +29,13 @@ if (!class_exists('Activity')) {
  */
 class ActivitiesControllerTestCase extends ControllerTestCase {
 
-/**
- * Fixtures
- *
- * @var array
- */
+	/**
+	 * Fixtures
+	 *
+	 * @var array
+	 */
 	public $fixtures = array(
-		'plugin.Activities.Activity' 
+		'plugin.Activities.Activity'
 		);
 
 /**
