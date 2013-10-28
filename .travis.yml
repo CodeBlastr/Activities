@@ -34,7 +34,7 @@ before_script:
     }" > ../zuha/app/Config/database.php
 
 script:
-  - sh -c "if [ '$PHPCS' = '1' ]; then phpcs -p --extensions=php --standard=CakePHP app/Plugin/Activities; else cd app; ../lib/Cake/Console/cake test Activities Controller/Activities --stderr; fi"
+  - sh -c "if [ '$PHPCS' = '1' ]; then phpcs -p --extensions=php,ctp --standard=CakePHP app/Plugin/Activities; else cd app; ../lib/Cake/Console/cake test Activities Controller/Activities --stderr; fi"
 
 notifications:
   email:
