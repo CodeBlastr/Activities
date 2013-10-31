@@ -1,6 +1,6 @@
 <?php
 /**
- * Activities Element 
+ * Activities Element
  *
  * Used to display a list of activities for a given object.
  *
@@ -17,21 +17,14 @@
  * @package       zuha
  * @subpackage    zuha.app.plugins.forms.views.elements
  * @since         Zuha(tm) v 0.0.1
- * @license       GPL v3 License (http://www.gnu.org/licenses/gpl.html) and Future Versions
+ * @license       GPL v3 License (http://www.gnu.org/licenses/gpl.html) and
+ * Future Versions
  */
-	# this should be at the top of every element created with format __ELEMENT_PLUGIN_ELEMENTNAME_instanceNumber.
- 	# it allows a database driven way of configuring elements, and having multiple instances of that configuration.
-	if(!empty($instance) && defined('__ELEMENT_ACTIVITIES_ACTIVITIES_'.$instance)) {
-		extract(unserialize(constant('__ELEMENT_ACTIVITIES_ACTIVITIES_'.$instance)));
-	} else if (defined('__ELEMENT_ACTIVITIES_ACTIVITIES')) {
-		extract(unserialize(__ELEMENT_ACTIVITIES_ACTIVITIES));
-	}
-	
-	# set up defaults
-	#$var = !empty($var) ? $var : 'var';
-	$parentForeignKey = !empty($parentForeignKey) ? $parentForeignKey : null;
-	$activities = $this->requestAction('activities/activities/index/' . $parentForeignKey);
-	
+if (defined('__ELEMENT_ACTIVITIES_ACTIVITIES')) {
+	extract(unserialize(__ELEMENT_ACTIVITIES_ACTIVITIES));
+}
+$parentForeignKey = !empty($parentForeignKey) ? $parentForeignKey : null;
+$activities = $this->requestAction('activities/activities/index/' . $parentForeignKey);
 	?>
     <ul class="activities">
     <?php
