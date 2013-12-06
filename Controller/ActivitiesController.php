@@ -16,6 +16,8 @@ class ActivitiesController extends ActivitiesAppController {
  * @var string
  */
 	public $uses = 'Activities.Activity';
+	
+	public $allowedActions = array('ping');
 
 /**
  * Index method
@@ -109,6 +111,61 @@ class ActivitiesController extends ActivitiesAppController {
 		}
 		$this->Session->setFlash(__('Activity was not deleted'));
 		$this->redirect(array('action' => 'index'));
+	}
+	
+/**
+ * used for a basic external "like" button
+ */
+	public function ping($activityType, $model, $foreignKey) {
+		
+		if (empty($activityType) || empty($model) || empty($foreignKey)) {
+			throw new BadRequestException;
+		}
+
+		$okToSave = true;		
+		$ipLimited = false;
+		
+		if (defined('__ACTIVITIES_LIMIT_PINGS_BY_IP')) {
+			$limited = unserialize(__ACTIVITIES_LIMIT_PINGS_BY_IP);
+			foreach ($limited as $type => $limit) {
+				if ($type === $activityType) {
+					$ipLimited = true;
+				}
+			}
+		}
+		if ($ipLimited) {
+			// check to see if this has been acted on by this ip
+			$hasActed = $this->Activity->find('first', array(
+				'conditions' => array(
+					'foreign_key' => $foreignKey,
+					'model' => $model,
+					'from_ip' => $_SERVER['REMOTE_ADDR']
+				)
+			));
+			if (!empty($hasActed)) {
+				$okToSave = false;
+			}
+		}
+		
+		if ($okToSave) {
+			$activity = $this->Activity->create(array(
+				'activity_type' => $activityType,
+				'name' => $_SERVER['HTTP_REFERER'],
+				'foreign_key' => $foreignKey,
+				'model' => $model,
+				'from_ip' => $_SERVER['REMOTE_ADDR']
+			));
+			$activity = $this->Activity->save();
+			$this->view = false;
+			$this->layout = false;
+			$this->autoRender = false;
+			$this->response->header(array(
+				'Access-Control-Allow-Origin' => '*'
+			));
+			return ($activity) ? 'true' : 'false';
+		} else {
+			return false;
+		}
 	}
 
 }
