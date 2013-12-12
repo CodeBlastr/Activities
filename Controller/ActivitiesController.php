@@ -3,27 +3,27 @@ App::uses('ActivitiesAppController', 'Activities.Controller');
 
 class ActivitiesController extends ActivitiesAppController {
 
-/**
- * Name
- *
- * @var string
- */
+	/**
+	 * Name
+	 *
+	 * @var string
+	 */
 	public $name = 'Activities';
 
-/**
- * Uses
- *
- * @var string
- */
+	/**
+	 * Uses
+	 *
+	 * @var string
+	 */
 	public $uses = 'Activities.Activity';
-	
+
 	public $allowedActions = array('ping');
 
-/**
- * Index method
- *
- * @return array
- */
+	/**
+	 * Index method
+	 *
+	 * @return array
+	 */
 	public function index($parentForeignKey = null) {
 		$this->paginate['fields'] = array('id', 'name', 'creator_id', 'created', 'description');
 		$this->paginate['contain'] = array('Creator' => array('fields' => array('id', 'full_name')));
@@ -38,11 +38,11 @@ class ActivitiesController extends ActivitiesAppController {
 		return $activities;
 	}
 
-/**
- * Add method
- *
- * @throws NotFoundException
- */
+	/**
+	 * Add method
+	 *
+	 * @throws NotFoundException
+	 */
 	public function add() {
 		if (!empty($this->request->data)) {
 			try {
@@ -55,12 +55,12 @@ class ActivitiesController extends ActivitiesAppController {
 		}
 	}
 
-/**
- * Edit method
- *
- * @param type $id
- * @throws NotFoundException
- */
+	/**
+	 * Edit method
+	 *
+	 * @param type $id
+	 * @throws NotFoundException
+	 */
 	public function edit($id = null) {
 		$this->Activity->id = $id;
 		if (!$this->Activity->exists()) {
@@ -79,12 +79,12 @@ class ActivitiesController extends ActivitiesAppController {
 		$this->request->data = $this->Activity->read(null, $id);
 	}
 
-/**
- * View method
- *
- * @param type $id
- * @throws NotFoundException
- */
+	/**
+	 * View method
+	 *
+	 * @param type $id
+	 * @throws NotFoundException
+	 */
 	public function view($id = null) {
 		$this->Activity->id = $id;
 		if (!$this->Activity->exists()) {
@@ -112,19 +112,19 @@ class ActivitiesController extends ActivitiesAppController {
 		$this->Session->setFlash(__('Activity was not deleted'));
 		$this->redirect(array('action' => 'index'));
 	}
-	
-/**
- * used for a basic external "like" button
- */
+
+	/**
+	 * used for a basic external "like" button
+	 * @throws BadRequestException
+	 */
 	public function ping($activityType, $model, $foreignKey) {
-		
 		if (empty($activityType) || empty($model) || empty($foreignKey)) {
 			throw new BadRequestException;
 		}
 
-		$okToSave = true;		
+		$okToSave = true;
 		$ipLimited = false;
-		
+
 		if (defined('__ACTIVITIES_LIMIT_PINGS_BY_IP')) {
 			$limited = unserialize(__ACTIVITIES_LIMIT_PINGS_BY_IP);
 			foreach ($limited as $type => $limit) {
@@ -136,17 +136,13 @@ class ActivitiesController extends ActivitiesAppController {
 		if ($ipLimited) {
 			// check to see if this has been acted on by this ip
 			$hasActed = $this->Activity->find('first', array(
-				'conditions' => array(
-					'foreign_key' => $foreignKey,
-					'model' => $model,
-					'from_ip' => $_SERVER['REMOTE_ADDR']
-				)
+				'conditions' => array('foreign_key' => $foreignKey, 'model' => $model, 'from_ip' => $_SERVER['REMOTE_ADDR'])
 			));
 			if (!empty($hasActed)) {
 				$okToSave = false;
 			}
 		}
-		
+
 		if ($okToSave) {
 			$activity = $this->Activity->create(array(
 				'activity_type' => $activityType,
@@ -159,9 +155,7 @@ class ActivitiesController extends ActivitiesAppController {
 			$this->view = false;
 			$this->layout = false;
 			$this->autoRender = false;
-			$this->response->header(array(
-				'Access-Control-Allow-Origin' => '*'
-			));
+			$this->response->header(array('Access-Control-Allow-Origin' => '*'));
 			return ($activity) ? 'true' : 'false';
 		} else {
 			return false;
