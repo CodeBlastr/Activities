@@ -3,27 +3,27 @@ App::uses('ActivitiesAppController', 'Activities.Controller');
 
 class ActivitiesController extends ActivitiesAppController {
 
-	/**
-	 * Name
-	 *
-	 * @var string
-	 */
+/**
+ * Name
+ *
+ * @var string
+ */
 	public $name = 'Activities';
 
-	/**
-	 * Uses
-	 *
-	 * @var string
-	 */
+/**
+ * Uses
+ *
+ * @var string
+ */
 	public $uses = 'Activities.Activity';
 
 	public $allowedActions = array('ping');
 
-	/**
-	 * Index method
-	 *
-	 * @return array
-	 */
+/**
+ * Index method
+ *
+ * @return array
+ */
 	public function index($parentForeignKey = null) {
 		$this->paginate['fields'] = array('id', 'name', 'creator_id', 'created', 'description');
 		$this->paginate['contain'] = array('Creator' => array('fields' => array('id', 'full_name')));
@@ -38,11 +38,11 @@ class ActivitiesController extends ActivitiesAppController {
 		return $activities;
 	}
 
-	/**
-	 * Add method
-	 *
-	 * @throws NotFoundException
-	 */
+/**
+ * Add method
+ *
+ * @throws NotFoundException
+ */
 	public function add() {
 		if (!empty($this->request->data)) {
 			try {
@@ -55,12 +55,12 @@ class ActivitiesController extends ActivitiesAppController {
 		}
 	}
 
-	/**
-	 * Edit method
-	 *
-	 * @param type $id
-	 * @throws NotFoundException
-	 */
+/**
+ * Edit method
+ *
+ * @param type $id
+ * @throws NotFoundException
+ */
 	public function edit($id = null) {
 		$this->Activity->id = $id;
 		if (!$this->Activity->exists()) {
@@ -79,12 +79,12 @@ class ActivitiesController extends ActivitiesAppController {
 		$this->request->data = $this->Activity->read(null, $id);
 	}
 
-	/**
-	 * View method
-	 *
-	 * @param type $id
-	 * @throws NotFoundException
-	 */
+/**
+ * View method
+ *
+ * @param type $id
+ * @throws NotFoundException
+ */
 	public function view($id = null) {
 		$this->Activity->id = $id;
 		if (!$this->Activity->exists()) {
@@ -113,10 +113,10 @@ class ActivitiesController extends ActivitiesAppController {
 		$this->redirect(array('action' => 'index'));
 	}
 
-	/**
-	 * used for a basic external "like" button
-	 * @throws BadRequestException
-	 */
+/**
+ * used for a basic external "like" button
+ * @throws BadRequestException
+ */
 	public function ping($activityType, $model, $foreignKey) {
 		if (empty($activityType) || empty($model) || empty($foreignKey)) {
 			throw new BadRequestException;
