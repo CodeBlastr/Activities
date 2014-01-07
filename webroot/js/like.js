@@ -1,26 +1,34 @@
 window.onload = function() {
-	if ( insertButton() ) {
-		var params = getParams();
-		var url = '<?php echo FULL_BASE_URL ?>/activities/activities/ping/like/'+params.m+'/'+params.id;
+	if (insertButton()) {
+		trigger('check');
 		var button = document.getElementById('buildrrLikeButton');
 		button.onclick = function(e) {
 			e.stopPropagation();
-			var liked = httpGet(url);
-			if ( liked === 'true' ) {
-				// change color and remove link action
-				button.style.background = '#ccc';
-				button.style.cursor = 'not-allowed';
-				button.onclick = null;
-			} else {
-				//alert('fail');
-			}
+			trigger('save');
 		};
 	}
 };
 
+function trigger(action) {
+	var params = getParams();
+	var url = '<?php echo FULL_BASE_URL ?>/activities/activities/ping/like/'+params.m+'/'+params.id+'/'+action;
+	var button = document.getElementById('buildrrLikeButton');
+	var liked = httpGet(url);
+	if ( liked === 'true' ) {
+		// change color and remove link action
+		button.style.background = '#ccc';
+		button.style.cursor = 'not-allowed';
+		button.onclick = null;
+		button.innerHTML = 'Liked';
+	} else {
+		//alert('fail');
+	}
+}
+
 function insertButton() {
 	var scriptBlock = document.getElementById('buildrrLiker');
 	var likeButton = document.createElement('div');
+	var identifier = document.getElementById('buildrrLike');
 	likeButton.id = 'buildrrLikeButton';
 	likeButton.style.background = '#FF7F00';
 	likeButton.style.width = '50px';
@@ -31,7 +39,8 @@ function insertButton() {
 	likeButton.style.color = '#fff';
 	likeButton.style.fontSize = '16px';
 	likeButton.innerHTML = 'Like';
-	document.body.insertBefore(likeButton, scriptBlock);
+	identifier.innerHTML = likeButton.outerHTML;
+	//document.body.insertBefore(likeButton, scriptBlock);
 	return true;
 }
 
@@ -47,6 +56,7 @@ function getParams() {
 	}
 	return cleanParams;
 }
+
 function httpGet(theUrl) {
 	var xmlHttp = null;
 	xmlHttp = new XMLHttpRequest();

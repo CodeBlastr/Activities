@@ -117,7 +117,7 @@ class ActivitiesController extends ActivitiesAppController {
  * used for a basic external "like" button
  * @throws BadRequestException
  */
-	public function ping($activityType, $model, $foreignKey) {
+	public function ping($activityType, $model, $foreignKey, $action) {
 		if (empty($activityType) || empty($model) || empty($foreignKey)) {
 			throw new BadRequestException;
 		}
@@ -143,7 +143,7 @@ class ActivitiesController extends ActivitiesAppController {
 			}
 		}
 
-		if ($okToSave) {
+		if ($okToSave && $action == 'save') {
 			$activity = $this->Activity->create(array(
 				'activity_type' => $activityType,
 				'name' => $_SERVER['HTTP_REFERER'],
@@ -152,13 +152,21 @@ class ActivitiesController extends ActivitiesAppController {
 				'from_ip' => $_SERVER['REMOTE_ADDR']
 			));
 			$activity = $this->Activity->save();
+			$this->response->header(array('Access-Control-Allow-Origin' => '*'));
 			$this->view = false;
 			$this->layout = false;
 			$this->autoRender = false;
-			$this->response->header(array('Access-Control-Allow-Origin' => '*'));
 			return ($activity) ? 'true' : 'false';
+		} elseif(!empty($hasActed) && $action == 'check') {
+			$this->view = false;
+			$this->layout = false;
+			$this->autoRender = false;
+			return 'true';
 		} else {
-			return false;
+			$this->view = false;
+			$this->layout = false;
+			$this->autoRender = false;
+			return 'false';
 		}
 	}
 
