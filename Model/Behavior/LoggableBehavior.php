@@ -21,7 +21,7 @@ class LoggableBehavior extends ModelBehavior {
  * @param Model $Model
  * @param bool $created
  */
-	public function afterSave(Model $Model, $created) {
+	public function afterSave(Model $Model, $created, $options = array()) {
 		if ($created) {
 			$this->triggerLog($Model);
 		}
